@@ -36,7 +36,7 @@ function get_post_names(){
 function get_posts($page = 1, $perpage = 0){
 
     if($perpage == 0){
-        $perpage = 10;
+        $perpage = 6;
     }
 
     $posts = get_post_names();
@@ -77,7 +77,7 @@ function get_posts($page = 1, $perpage = 0){
 function find_posts($page = 1, $perpage = 0){
 
     if($perpage == 0){
-        $perpage = 10;
+        $perpage = 6;
     }
 
     $posts = get_post_names();

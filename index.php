@@ -36,8 +36,23 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
-$app->get('/[{page:[0-9]+}]', function ($request, $response, $args){
+$app->get('/', function ($request, $response, $args){
     $page = 1;
+    $page = $page ? (int)$page : 1;
+
+    $posts = find_posts($page);
+
+    return $this->view->render($response, 'index.html', [
+        'posts' => $posts
+    ]);
+    //return $response->write(print_r($posts,true));
+});
+$app->get('/page=[{page:[0-9]+}]', function ($request, $response, $args){
+    if($args['page'] != 1){
+        $page = $args['page'];
+    }else{
+        return $response->withRedirect('/');
+    }
     $page = $page ? (int)$page : 1;
 
     $posts = find_posts($page);
