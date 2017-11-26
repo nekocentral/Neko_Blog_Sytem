@@ -40,7 +40,7 @@ $app->get('/[{page:[0-9]+}]', function ($request, $response, $args){
     $page = 1;
     $page = $page ? (int)$page : 1;
 
-    $posts = get_posts($page);
+    $posts = find_posts($page);
 
     return $this->view->render($response, 'index.html', [
         'posts' => $posts

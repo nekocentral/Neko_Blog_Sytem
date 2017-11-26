@@ -7,6 +7,15 @@
  */
 use Michelf\Markdown;
 
+function limit_text($text, $limit) {
+    if (str_word_count($text, 0) > $limit) {
+        $words = str_word_count($text, 2);
+        $pos = array_keys($words);
+        $text = substr($text, 0, $pos[$limit]) . '...';
+    }
+    return $text;
+}
+
 /* General Blog Functions */
 
 function get_post_names(){
@@ -58,6 +67,47 @@ function get_posts($page = 1, $perpage = 0){
         $arr = explode('</h1>', $content);
         $post->title = str_replace('<h1>','',$arr[0]);
         $post->body = $arr[1];
+
+        $tmp[] = $post;
+    }
+
+    return $tmp;
+}
+
+function find_posts($page = 1, $perpage = 0){
+
+    if($perpage == 0){
+        $perpage = 10;
+    }
+
+    $posts = get_post_names();
+
+    // Extract a specific page with results
+    $posts = array_slice($posts, ($page-1) * $perpage, $perpage);
+
+    $tmp = array();
+
+    // Create a new instance of the markdown parser
+    $md = new Markdown();
+
+    foreach($posts as $k=>$v){
+
+        $post = new stdClass;
+
+        // Extract the date
+        $arr = explode('_', $v);
+        $post->date = strtotime(str_replace('posts/','',$arr[0]));
+
+        // The post URL
+        $post->url = '/'.date('Y/m', $post->date).'/'.str_replace('.md','',$arr[1]);
+
+        // Get the contents and convert it to HTML
+        $content = $md->defaultTransform(file_get_contents($v));
+
+        // Extract the title and body
+        $arr = explode('</h1>', $content);
+        $post->title = str_replace('<h1>','',$arr[0]);
+        $post->body = limit_text($arr[1],36);
 
         $tmp[] = $post;
     }
