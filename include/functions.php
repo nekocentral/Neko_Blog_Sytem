@@ -107,7 +107,7 @@ function find_posts($page = 1, $perpage = 0){
         // Extract the title and body
         $arr = explode('</h1>', $content);
         $post->title = str_replace('<h1>','',$arr[0]);
-        $post->body = limit_text($arr[1],36);
+        $post->body = limit_text(strip_tags($arr[1]),36);
 
         $tmp[] = $post;
     }
