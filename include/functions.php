@@ -33,6 +33,7 @@ function get_post_names(){
     return $_cache;
 }
 
+
 function get_posts($page = 1, $perpage = 0){
 
     if($perpage == 0){
@@ -130,6 +131,18 @@ function find_post($year, $month, $name){
     }
 
     return false;
+}
+
+// Helper function to determine whether
+// to show the pagination buttons
+function has_pagination($page = 1){
+    $total = count(get_post_names());
+
+    return array(
+        'prev'=> $page > 1,
+        'next'=> $total > $page*8,
+        'total'=> $total - 8
+    );
 }
 
 

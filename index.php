@@ -17,7 +17,7 @@ $container = $app->getContainer();
 // Register Twig View helper
 $container['view'] = function ($c) {
     $view = new \Slim\Views\Twig('include/views', [
-        //'cache' => 'include/cache'
+        'cache' => 'include/cache'
     ]);
 
     // Instantiate and add Slim specific extension
@@ -38,14 +38,14 @@ $container['notFoundHandler'] = function ($c) {
 
 $app->get('/', function ($request, $response, $args){
     $page = 1;
-    $page = $page ? (int)$page : 1;
-
     $posts = find_posts($page);
 
     return $this->view->render($response, 'index.html', [
-        'posts' => $posts
+        'posts' => $posts,
+        'has_pagination' => has_pagination($page),
+        'page' => $page
     ]);
-    //return $response->write(print_r($posts,true));
+    //return $response->write(print_r(__DIR__));
 });
 $app->get('/page/{page:[0-9]+}', function ($request, $response, $args){
     if($args['page'] != 1){
@@ -58,9 +58,11 @@ $app->get('/page/{page:[0-9]+}', function ($request, $response, $args){
     $posts = find_posts($page);
 
     return $this->view->render($response, 'index.html', [
-        'posts' => $posts
+        'posts' => $posts,
+        'has_pagination' => has_pagination($page),
+        'page' => $page
     ]);
-    //return $response->write(print_r($posts,true));
+    //return $response->write(print_r(has_pagination($page),true));
 });
 
 $app->get('/{year:[0-9]{4}+}/{month:[0-9]{2}+}/{name}', function ($request, $response, $args){
@@ -72,7 +74,7 @@ $app->get('/{year:[0-9]{4}+}/{month:[0-9]{2}+}/{name}', function ($request, $res
     }
 
     return $this->view->render($response, 'post.html', [
-        'post' => $post
+        'post' => $post,
     ]);
 });
 
