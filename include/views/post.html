@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="post">
-    <h2>{{post.title}}</h2>
-    <div class="date">{{post.date|date("d F Y")}}</div>
-    {{post.body | raw}}
-</div>
+<!-- Blog Post -->
+    <article class="blog_post">
+        <h3 class="blog_post_title">{{post.title}}</h3>
+        <div class="date_box d-flex flex-column align-items-center justify-content-center">
+            <span>{{post.date|date("d M Y")}}</span>
+        </div>
+        <div class="blog_post_text">
+            {{post.body | raw}}
+        </div>
+    </article>
 {% endblock %}
