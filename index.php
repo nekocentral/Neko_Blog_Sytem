@@ -47,7 +47,7 @@ $app->get('/', function ($request, $response, $args){
     ]);
     //return $response->write(print_r($posts,true));
 });
-$app->get('/page=[{page:[0-9]+}]', function ($request, $response, $args){
+$app->get('/page/{page:[0-9]+}', function ($request, $response, $args){
     if($args['page'] != 1){
         $page = $args['page'];
     }else{
